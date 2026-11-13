@@ -1,0 +1,170 @@
+@import "tailwindcss";
+@plugin "@tailwindcss/typography";
+
+/* Design tokens. Components only use the semantic names below, so the whole
+   app re-themes (light/dark, or a new brand colour) from this one block. */
+:root {
+  --canvas: #f7f7f4;
+  --surface: #ffffff;
+  --sunken: #f0efeb;
+  --line: #e6e4de;
+  --ink: #1b1a17;
+  --muted: #68665f;
+  --faint: #9a978f;
+  --accent: #5b5bd6;
+  --accent-hover: #4a4ac4;
+  --accent-soft: #ececfb;
+  --accent-ink: #3e3eb0;
+  --success: #23875a;
+  --success-soft: #e3f4eb;
+  --warn: #a8690c;
+  --warn-soft: #fbf0d9;
+  --danger: #c93a54;
+  --danger-soft: #fce8ec;
+  /* Subject chips and avatars are tinted from a hue (see .tint). */
+  --tint-bg-l: 0.95;
+  --tint-bg-c: 0.035;
+  --tint-fg-l: 0.42;
+  --tint-solid-l: 0.62;
+  --shadow-card: 0 1px 2px rgb(27 26 23 / 0.04), 0 1px 1px rgb(27 26 23 / 0.03);
+  --shadow-pop: 0 12px 32px -8px rgb(27 26 23 / 0.18), 0 2px 6px rgb(27 26 23 / 0.06);
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --canvas: #0f0f11;
+    --surface: #17171a;
+    --sunken: #0b0b0d;
+    --line: #29292e;
+    --ink: #f1f1ee;
+    --muted: #a5a5a0;
+    --faint: #73736f;
+    --accent: #8484f2;
+    --accent-hover: #9797f6;
+    --accent-soft: #212145;
+    --accent-ink: #b7b7ff;
+    --success: #4cc38a;
+    --success-soft: #11301f;
+    --warn: #e2a64a;
+    --warn-soft: #36270d;
+    --danger: #f0718a;
+    --danger-soft: #3b151f;
+    --tint-bg-l: 0.27;
+    --tint-bg-c: 0.05;
+    --tint-fg-l: 0.86;
+    --tint-solid-l: 0.68;
+    --shadow-card: 0 1px 2px rgb(0 0 0 / 0.3);
+    --shadow-pop: 0 16px 40px -8px rgb(0 0 0 / 0.6);
+  }
+}
+
+@theme inline {
+  --font-sans: "Inter Variable", ui-sans-serif, system-ui, sans-serif;
+  --color-canvas: var(--canvas);
+  --color-surface: var(--surface);
+  --color-sunken: var(--sunken);
+  --color-line: var(--line);
+  --color-ink: var(--ink);
+  --color-muted: var(--muted);
+  --color-faint: var(--faint);
+  --color-accent: var(--accent);
+  --color-accent-hover: var(--accent-hover);
+  --color-accent-soft: var(--accent-soft);
+  --color-accent-ink: var(--accent-ink);
+  --color-success: var(--success);
+  --color-success-soft: var(--success-soft);
+  --color-warn: var(--warn);
+  --color-warn-soft: var(--warn-soft);
+  --color-danger: var(--danger);
+  --color-danger-soft: var(--danger-soft);
+  --shadow-card: var(--shadow-card);
+  --shadow-pop: var(--shadow-pop);
+}
+
+html {
+  color-scheme: light dark;
+}
+
+body {
+  margin: 0;
+  min-height: 100dvh;
+  background: var(--canvas);
+  color: var(--ink);
+  font-family: var(--font-sans);
+  font-feature-settings: "cv11", "ss01";
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+}
+
+:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 2px;
+}
+
+/* Hue-based tint: set --h on the element (style={{ '--h': 250 }}). */
+.tint {
+  background: oklch(var(--tint-bg-l) var(--tint-bg-c) var(--h));
+  color: oklch(var(--tint-fg-l) 0.12 var(--h));
+}
+.tint-solid {
+  background: oklch(var(--tint-solid-l) 0.14 var(--h));
+  color: #fff;
+}
+
+dialog.modal {
+  margin: auto;
+  padding: 0;
+  border: 1px solid var(--line);
+  border-radius: 1.25rem;
+  background: var(--surface);
+  color: var(--ink);
+  box-shadow: var(--shadow-pop);
+  width: min(34rem, calc(100vw - 2rem));
+  max-height: calc(100dvh - 2rem);
+}
+dialog.modal::backdrop {
+  background: rgb(15 15 17 / 0.45);
+  backdrop-filter: blur(3px);
+}
+dialog.modal[open] {
+  animation: pop 0.16s ease-out;
+}
+
+@keyframes pop {
+  from { opacity: 0; transform: translateY(6px) scale(0.985); }
+}
+@keyframes rise {
+  from { opacity: 0; transform: translateY(4px); }
+}
+.rise {
+  animation: rise 0.25s ease-out both;
+}
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after { animation: none !important; transition: none !important; }
+}
+
+/* Markdown from the assistant */
+.prose-app {
+  --tw-prose-body: var(--ink);
+  --tw-prose-headings: var(--ink);
+  --tw-prose-bold: var(--ink);
+  --tw-prose-links: var(--accent-ink);
+  --tw-prose-bullets: var(--faint);
+  --tw-prose-counters: var(--faint);
+  --tw-prose-hr: var(--line);
+  --tw-prose-th-borders: var(--line);
+  --tw-prose-td-borders: var(--line);
+  --tw-prose-quotes: var(--muted);
+  --tw-prose-quote-borders: var(--line);
+  --tw-prose-code: var(--ink);
+  max-width: none;
+  font-size: 0.9375rem;
+  line-height: 1.65;
+}
+.prose-app :where(h1, h2, h3) {
+  letter-spacing: -0.01em;
+}
+.prose-app :where(table) {
+  display: block;
+  overflow-x: auto;
+}
